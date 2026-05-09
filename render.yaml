@@ -2,8 +2,20 @@ services:
   - type: web
     name: saideeksha-portfolio
     runtime: static
-    buildCommand: npm install && npm run build
+    buildCommand: rm -rf node_modules package-lock.json && npm install && npm run build
     staticPublishPath: ./dist
     envVars:
       - key: NODE_VERSION
         value: 20
+      - key: NPM_CONFIG_CACHE
+        value: /tmp/npm-cache
+
+# services:
+#   - type: web
+#     name: saideeksha-portfolio
+#     runtime: static
+#     buildCommand: npm install && npm run build
+#     staticPublishPath: ./dist
+#     envVars:
+#       - key: NODE_VERSION
+#         value: 20
