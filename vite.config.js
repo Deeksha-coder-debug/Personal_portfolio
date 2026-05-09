@@ -7,15 +7,15 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
-    minify: 'terser',
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          motion: ['framer-motion'],
-          icons: ['lucide-react']
-        }
-      }
-    }
+    // minify: 'terser',
+    // rollupOptions: {
+    //   output: {
+    //     manualChunks: {
+    //       vendor: ['react', 'react-dom'],
+    //       motion: ['framer-motion'],
+    //       icons: ['lucide-react']
+    //     }
+    //   }
+    // }
   }
 })
