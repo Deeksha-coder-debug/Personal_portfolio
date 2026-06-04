@@ -86,7 +86,7 @@ export default function Resume() {
 
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <motion.a
-                  href="/resume.pdf"
+                  href="/Deeksha_Talabaktula_resume.pdf"
                   download
                   whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
                   className="flex items-center justify-center gap-2 px-6 py-3.5 bg-slate-100 text-bg rounded-xl font-semibold hover:bg-white transition-all shadow-lg shadow-accent-cyan/10"
