@@ -95,7 +95,7 @@ export default function Resume() {
                   Download PDF
                 </motion.a>
                 <motion.a
-                  href="/resume.pdf"
+                  href="/Deeksha_Talabaktula_resume.pdf"
                   target="_blank" rel="noopener noreferrer"
                   whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
                   className="flex items-center justify-center gap-2 px-6 py-3.5 glass rounded-xl font-semibold text-slate-300 hover:text-slate-100 border border-white/[0.06] hover:border-accent-cyan/15 transition-all"
