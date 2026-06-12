@@ -78,7 +78,7 @@ export default function Navbar() {
               <Linkedin size={18} />
             </motion.a>
             <motion.a
-              href="/resume.pdf"
+              href="/Deeksha_Talabaktula_resume.pdf"
               download
               whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
               className="flex items-center gap-2 px-4 py-2 text-[13px] font-semibold bg-slate-100 text-bg rounded-xl hover:bg-white transition-colors shadow-lg shadow-accent-cyan/10"
