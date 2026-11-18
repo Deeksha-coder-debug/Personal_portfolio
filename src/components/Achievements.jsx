@@ -1,36 +1,128 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef, useEffect, useState } from 'react'
-import { Trophy, Award, Medal, Star, TrendingUp } from 'lucide-react'
+import { Trophy, Award, Medal, Star, TrendingUp, ShieldCheck, Users, Sparkles, Mic2 } from 'lucide-react'
 
 const items = [
-  { icon: Trophy, title: 'GATE DA 2026', value: 'Qualified', detail: 'Score: 502 | Data Science & AI Paper', highlight: true },
-  { icon: Medal, title: 'NIMCET 2024', value: 'AIR 713', detail: 'National Level MCA Entrance Examination', highlight: false },
-  { icon: Award, title: 'OJEE 2024', value: 'Rank 16', detail: 'Odisha Joint Entrance Examination for MCA', highlight: true },
-  { icon: Star, title: 'University Topper', value: 'Gold Medalist', detail: 'B.Sc. Computer Science | Vikram Deb University', highlight: false },
-  { icon: TrendingUp, title: 'Academic Excellence', value: '9+ CGPA', detail: 'MCA at IIIT Bhopal (Current)', highlight: true },
+  {
+    icon: Trophy,
+    title: 'GATE 2026 (DA)',
+    value: '502 Score',
+    detail: 'Qualified Data Science & Artificial Intelligence paper in 1st attempt.',
+    highlight: true,
+    bg: 'bg-indigo-50',
+    color: 'text-indigo-600',
+    border: 'border-indigo-200'
+  },
+  {
+    icon: TrendingUp,
+    title: 'IIIT Bhopal (MCA)',
+    value: '9.7 CGPA',
+    detail: 'Master of Computer Applications (2024–2027) | Outstanding Academic Standing.',
+    highlight: true,
+    bg: 'bg-emerald-50',
+    color: 'text-emerald-600',
+    border: 'border-emerald-200'
+  },
+  {
+    icon: Star,
+    title: 'University Topper',
+    value: 'Rank 1 Gold',
+    detail: 'Recognized as University Topper at Vikram Deb University with 9.5/10 CGPA (B.Sc. CS).',
+    highlight: true,
+    bg: 'bg-amber-50',
+    color: 'text-amber-600',
+    border: 'border-amber-200'
+  },
+  {
+    icon: Award,
+    title: 'OJEE 2024',
+    value: 'Rank 16',
+    detail: 'Odisha Joint Entrance Examination for MCA state ranking.',
+    highlight: false,
+    bg: 'bg-sky-50',
+    color: 'text-sky-600',
+    border: 'border-slate-200'
+  },
+  {
+    icon: Medal,
+    title: 'NIMCET 2024',
+    value: 'AIR 713',
+    detail: 'National Level All India Entrance Examination for MCA admission across NITs.',
+    highlight: false,
+    bg: 'bg-violet-50',
+    color: 'text-violet-600',
+    border: 'border-slate-200'
+  },
+  {
+    icon: Sparkles,
+    title: 'Oracle Certified',
+    value: 'Agentic AI',
+    detail: 'Foundations Associate in Autonomous AI Agents and Multi-Agent Workflows.',
+    highlight: true,
+    bg: 'bg-purple-50',
+    color: 'text-purple-600',
+    border: 'border-purple-200'
+  },
+  {
+    icon: Star,
+    title: 'Data Structures & Algo',
+    value: '400+ Solved',
+    detail: 'Solved 400+ algorithmic problems across LeetCode and GeeksforGeeks.',
+    highlight: false,
+    bg: 'bg-cyan-50',
+    color: 'text-cyan-600',
+    border: 'border-slate-200'
+  },
+  {
+    icon: ShieldCheck,
+    title: 'IBM SkillsBuild',
+    value: 'Cybersecurity',
+    detail: 'Certified in threat modeling, network security, and defensive security architectures.',
+    highlight: false,
+    bg: 'bg-blue-50',
+    color: 'text-blue-600',
+    border: 'border-slate-200'
+  },
+  {
+    icon: Users,
+    title: 'Class Representative',
+    value: '60+ Peers',
+    detail: 'Elected CR for 60+ MCA students at IIIT Bhopal, coordinating faculty-student communication.',
+    highlight: false,
+    bg: 'bg-rose-50',
+    color: 'text-rose-600',
+    border: 'border-slate-200'
+  },
 ]
 
 function AnimatedValue({ target, isInView }) {
   const [count, setCount] = useState(0)
-  const num = parseInt(target.replace(/\D/g, '')) || 0
+  const hasDecimal = target.includes('.')
+  const floatVal = parseFloat(target.replace(/[^0-9.]/g, '')) || 0
+  const isNumeric = !isNaN(floatVal) && floatVal > 0 && /\d/.test(target)
   const prefix = target.match(/^[^\d]*/)?.[0] || ''
-  const suffix = target.match(/[^\d]*$/)?.[0] || ''
+  const suffix = target.replace(/^[^\d]*[0-9.]*/, '')
 
   useEffect(() => {
-    if (!isInView || num === 0) return
+    if (!isInView || !isNumeric) return
     let start = 0
-    const duration = 1600
-    const step = num / (duration / 16)
+    const duration = 1200
+    const steps = 40
+    const increment = floatVal / steps
     const timer = setInterval(() => {
-      start += step
-      if (start >= num) { setCount(num); clearInterval(timer) }
-      else setCount(Math.floor(start))
-    }, 16)
+      start += increment
+      if (start >= floatVal) {
+        setCount(floatVal)
+        clearInterval(timer)
+      } else {
+        setCount(hasDecimal ? parseFloat(start.toFixed(1)) : Math.floor(start))
+      }
+    }, duration / steps)
     return () => clearInterval(timer)
-  }, [isInView, num])
+  }, [isInView, floatVal, hasDecimal, isNumeric])
 
-  if (num === 0) return <span>{target}</span>
-  return <span>{prefix}{count}{suffix}</span>
+  if (!isNumeric) return <span>{target}</span>
+  return <span>{prefix}{hasDecimal ? count.toFixed(1) : count}{suffix}</span>
 }
 
 export default function Achievements() {
@@ -38,20 +130,23 @@ export default function Achievements() {
   const isInView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section id="achievements" className="py-28 lg:py-36 relative">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-accent-cyan/[0.03] via-transparent to-transparent pointer-events-none" />
+    <section id="achievements" className="py-24 lg:py-32 relative bg-slate-50/60">
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         <motion.div
           ref={ref}
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 25 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="text-[11px] font-bold text-slate-500 tracking-[0.2em] uppercase">Track Record</span>
-          <h2 className="text-3xl lg:text-[42px] font-black mt-4 text-slate-100">Achievements</h2>
-          <p className="mt-4 text-[15px] text-slate-500 max-w-xl mx-auto leading-relaxed">
-            Consistent academic excellence and competitive examination success.
+          <span className="inline-block px-3.5 py-1 text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-full uppercase tracking-wider mb-3">
+            Honors & Accolades
+          </span>
+          <h2 className="text-3xl lg:text-4xl font-black text-slate-900">
+            Achievements & Recognition
+          </h2>
+          <p className="mt-3 text-slate-600 max-w-xl mx-auto text-sm sm:text-base">
+            Verified competitive examination results, university gold medal, and industry certifications.
           </p>
         </motion.div>
 
@@ -59,33 +154,33 @@ export default function Achievements() {
           {items.map((item, idx) => (
             <motion.div
               key={item.title}
-              initial={{ opacity: 0, scale: 0.92 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              whileHover={{ y: -6, transition: { duration: 0.25 } }}
-              className={`relative p-7 rounded-2xl border transition-all duration-400 card-hover ${
-                item.highlight
-                  ? 'glass-strong border-accent-cyan/10 glow-cyan'
-                  : 'glass border-white/[0.05] hover:border-accent-cyan/10'
+              initial={{ opacity: 0, y: 25 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.45, delay: idx * 0.06 }}
+              whileHover={{ y: -5, transition: { duration: 0.25 } }}
+              className={`p-6 rounded-2xl bg-white border transition-all duration-300 shadow-sm hover:shadow-md ${
+                item.highlight ? `${item.border} ring-1 ring-indigo-500/10` : 'border-slate-200/90 hover:border-indigo-300'
               }`}
             >
-              <div className="flex items-start justify-between mb-6">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                  item.highlight ? 'bg-accent-cyan/10 text-accent-cyan' : 'bg-bg-secondary/80 text-slate-500'
-                }`}>
-                  <item.icon size={24} />
+              <div className="flex items-start justify-between mb-5">
+                <div className={`w-12 h-12 rounded-xl ${item.bg} ${item.color} flex items-center justify-center`}>
+                  <item.icon size={22} />
                 </div>
                 {item.highlight && (
-                  <span className="px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider bg-bg-secondary text-slate-400 rounded-md border border-white/[0.05]">
-                    Top
+                  <span className="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-full">
+                    Distinction
                   </span>
                 )}
               </div>
-              <h3 className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">{item.title}</h3>
-              <p className="text-3xl font-black text-slate-100 mb-2">
+              <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+                {item.title}
+              </h3>
+              <p className="text-2xl sm:text-3xl font-black text-slate-900 mb-2">
                 <AnimatedValue target={item.value} isInView={isInView} />
               </p>
-              <p className="text-[12px] text-slate-500 leading-relaxed">{item.detail}</p>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                {item.detail}
+              </p>
             </motion.div>
           ))}
         </div>
